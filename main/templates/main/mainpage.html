@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<img src="{% static 'images/likelion.png' %}" alt="logo" width="200px">
+<h1 class="contents">2025 멋쟁이사자처럼 {{generation}}기</h1>
+<h2 class="second-title">🦁2주차 요약정리🦁</h2>
+<div class="menu">
+    <span>바로가기 -></span>
+    <a href="#section1">Template</a><span> |</span>
+    <a href="#section2">효율적인코드</a>
+    <span> <- 바로가기 </span>
+</div>
+<h3 class='third-title' id="section1">⊙Template</h3>
+<div>
+    <p>■ Django MTV - model, template, view</p>
+    <ul>
+        <li>user</li>
+        <li>urls.py</li>
+        <ul>
+            <li>사용자의 요청을 받는 주소를 매핑하는 역할</li>
+            <li>/main으로 요청이 들어오면 -> views.mainpage() 함수를 실행</li>
+            <li>
+                <code>path('',views.mainpage,name='mainpage')</code>
+            </li>
+        </ul>
+        <li>views.py</li>
+        <ul>
+            <li>실제로 요청을 받고 어떤 데이터를 보여줄지 결정하는 함수가 들어있음</li>
+            <li>필요하면 models.py를 통해 DB에서 데이터를 가져오고, 템플릿에 넘겨줌</li>
+            <li>
+                <pre style='margin: 0'><code>def mainpage(request):
+        return render(request,'main/mainpage.hyml)</code></pre>
+            </li>
+        </ul>
+        <li>models.py</li>
+        <ul>
+            <li>DB와 연결되는 데이터 구조 정의 파일일</li>
+        </ul>
+        <li>tempates</li>
+        <ul>
+            <li>실제로 사용자가 보는 웹페이지 화면(HTML)이 들어 있음
+            </li>
+        </ul>
+        <li>연결을 확인하기 위한 명령어</li>
+        <ul>
+            <li><code>python manage.py runserver</code></li>
+        </ul>
+    </ul>
+</div>
+<div>
+    <p>■ template</p>
+    <ul>
+        <li>템플릿 언어
+            <ul>{% verbatim %}
+                <li>Django에서 HTML 템플릿 안에 {{ }} 나 {% %} 같은 문법을 사용해 데이터 출력 등을 처리하는 언어</li>
+                {% endverbatim %}
+            </ul>
+        </li>
+
+        <li>템플릿 변수
+            <ul>{% verbatim %}
+                <li>{{ 변수 }}</li>
+                {% endverbatim %}
+            </ul>
+        </li>
+
+        <li>템플릿 태그
+            <ul>{% verbatim %}
+                <li>{% 태그 %}</li>
+                {% endverbatim %}
+            </ul>
+        </li>
+
+        <li>템플릿 필터
+            <ul>
+                <li>값의 형태를 바꿔 출력할 때 사용</li>
+                {% verbatim %}
+                <li>{{ 값 | 필터 }} -> {{ name | upper }} -> 대문자로 출력</li>
+                {% endverbatim %}
+            </ul>
+        </li>
+
+        <li>템플릿 주석
+            <ul>{% verbatim %}
+                <li>{# 주석 내용 #}</li>
+                {% endverbatim %}
+            </ul>
+        </li>
+    </ul>
+</div>
+<h3 class="third-title" id="section2">⊙효율적인 코드</h3>
+<div>
+    <p>■ template 상속</p>
+    <ul>
+        <li>template 상속이란?</li>
+        <ul>
+            <li>반복되는 HTML 코드를 한 곳에 놓아두고 다른 템플릿에서 불러와서 재사용하는 방식</li>
+            <li>모든 HTML마다 head, nav등이 계속 반복되므로 효율 향상을 위해</li>
+            <li>공통 부분은 base.html에 저장후 나머지 페이지에는 그걸 상속해서 필요한 내용만 추가</li>
+        </ul>
+        <li>runserver 시 base.html을 찾을 수 없는 에러</li>
+        <ul>
+            <li>mainpage.html은 main의 template안에 있고 base.html은 전체 프로젝트용 templates 폴더 안에 있음</li>
+            <li>따라서 settings.py에 들어가서 찾을 수 있게 해주어야 함!</li>
+        </ul>
+    </ul>
+</div>
+<div>
+    <p>■ navbar 분리</p>
+    <ul>
+        <li>분리 이유?</li>
+        <ul>
+            <li>navbar,footer,sidebar 같은 모든 페이지에 반복되는 HTML은 계속 복붙하지 말고 한 곳에 저장해서 재사용 하는 것이 좋음
+            </li>
+        </ul>
+        <li>파일 이름에 언더바(_)붙이는 이유?</li>
+        <ul>
+            <li>직접 브라우저에 보여지는 파일이 아니라 include로만 쓰는 조각들이어서 HTML조각파일 이라는 개발자들 간의 약속</li>
+        </ul>
+        <li>static 이란?</li>
+        <ul>
+            <li>웹페이지에서 사용되는 정적인 파일을 저장하는 디렉토리(css,image)</li>
+            <li>이 파일들은 서버에서 계산하거나 바꾸지 않고 브라우저에 그대로 전달되어 화면에 보여짐</li>
+            <li>장고가 또 main만 인식할 수 있으므로 또 경로 설정 해주기!</li>
+        </ul>
+    </ul>
+</div>
+
+{% endblock %}

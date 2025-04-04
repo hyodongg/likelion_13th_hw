@@ -1,0 +1,48 @@
+h1 {
+  color: orange;
+}
+.second-title {
+  font-family: "Courier New", Courier, monospace;
+  color: rgb(0, 157, 255);
+}
+.third-title {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  color: aqua;
+}
+p {
+  font-weight: bold;
+}
+.menu {
+  color: aquamarine;
+}
+a:link {
+  color: white;
+}
+a:visited {
+  color: white;
+}
+a:hover {
+  color: brown;
+}
+.joke {
+  color: red !important;
+  text-align: center;
+}
+p.second-p {
+  font-weight: normal;
+}
+.center-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.center-image img {
+  width: 70%;
+  max-width: 400px;
+  height: auto;
+}
+h1.img-bottom-text {
+  text-align: center;
+  font-size: 150px;
+  color: white;
+}
