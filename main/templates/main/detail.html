@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<h3>{{post.title}}</h3>
+작성자 : {{post.writer}}<br>
+작성 시각 : {{post.created_time}}<br>
+수정 시각 : {{post.updated_time}}
+<hr />
+{% if post.image %}
+<p><img src="{{post.image.url}}" alt="사진" width="200px" </p>
+    {% endif %}
+<p>{{post.content|linebreaksbr}}</p>
+<p>오늘의 기분: {{post.feeling}}</p>
+<a href="{% url 'main:edit' post.id %}">글 수정</a>
+<a href="{% url 'main:delete' post.id %}">글 삭제</a>
+<br>
+
+{% endblock %}

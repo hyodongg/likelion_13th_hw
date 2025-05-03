@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<h2>수정중!</h2>
+<form action="{% url 'main:update' post.id %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <p>제목: <input type="text" name="title" value="{{post.title}}"></p>
+    <p>작성자: <input type="text" name="writer" value="{{post.writer}}"></p>
+    {% if post.image %}
+    <p><img src="{{post.image.url}}" alt="사진" width="200px"></p>
+    {% endif %}
+    <p>사진: <input type="file" name="image"></p>
+    <p>글내용: <textarea type="text" name="content" id="" cols="50" rows="10">{{post.content}}</textarea></p>
+    <p>기분이 바뀌셨나요? <input type="text" name="feeling" value="{{post.feeling}}"></p>
+    <button type="submit">제출</button>
+</form>
+{% endblock %}
