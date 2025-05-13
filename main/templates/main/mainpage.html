@@ -3,6 +3,10 @@
 {% block content %}
 
 <img src="{% static 'images/logo.png' %}" alt="logo" width="100px">
+{% if request.user.profile.profile_image %}
+<p><img src="{{ request.user.profile.profile_image.url}}" alt="프로필 사진" width="100px"></p>
+<p><strong>프로필 사진</strong></p>
+{% endif %}
 <h1 class="contents">2025 멋쟁이사자처럼 {{ generation }}기</h1>
 <div class="contents">Welcome Django!</div>
 <div>🦁 머쩅이 사자의 일기짱🦁 </div>
@@ -19,4 +23,3 @@
 </ul>
 
 {% endblock %}
-

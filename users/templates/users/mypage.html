@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>효동의 마이페이지</h1>
+
+<h3>{{user.username}}님 안녕하세요</h3>
+<h3>당신의 이메일은 {{user.profile.email_address}}입니다.</h3>
+<h3>당신이 작성한 블로그 목록</h3>
+<ul>
+    {% for post in posts %}
+    <li>
+        <a href="{% url 'main:detail' post.id %}">{{ post.title }}</a>
+        <p>{{ post.writer }}</p>
+    </li>
+    {% endfor %}
+</ul>
+
+
+
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<form action="{% url 'accounts:signup' %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <p>username</p>
+    <input type="text" name="username">
+    <br>
+    <p>password</p>
+    <input type="password" name="password">
+    <br>
+    <p>confirm</p>
+    <input type="password" name="confirm">
+    <br>
+    <p>이메일 주소</p>
+    <input type="email" name="email_address">
+    <br>
+    <p>프로필 사진</p>
+    <input type="file" name="profile_image">
+    <hr>
+    <input type="submit" value="회원가입">
+</form>
+
+{% endblock %}
