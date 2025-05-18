@@ -31,22 +31,47 @@ def new_post(request):
 
 def detail(request,id):
     post = get_object_or_404(Post, pk=id)
-    return render(request, 'main/detail.html',{'post': post})
+    if request.method=='GET':
+        comments=Comment.objects.filter(post=post)
+        return render(request,'main/detail.html',{'post':post,'comments':comments})
+
+    elif request.method=='POST':
+        new_comment=Comment()
+        new_comment.post=post
+        new_comment.writer=request.user
+        new_comment.content=request.POST['content']
+        new_comment.pub_date=timezone.now()
+        new_comment.save()
+        return redirect('main:detail',id)
 
 def create(request):
-    new_post = Post()
+    if request.user.is_authenticated:
+        new_post = Post()
 
-    new_post.title = request.POST['title']
-    new_post.writer = request.POST['writer']
-    new_post.content = request.POST['content']
-    new_post.feeling = request.POST['feeling']
-    new_post.created_time = timezone.now()
-    new_post.updated_time = timezone.now()
-    new_post.image=request.FILES.get('image')
+        new_post.title = request.POST['title']
+        new_post.writer = request.user
+        new_post.content = request.POST['content']
+        new_post.feeling = request.POST['feeling']
+        new_post.created_time = timezone.now()
+        new_post.updated_time = timezone.now()
+        new_post.image=request.FILES.get('image')
 
-    new_post.save()
+        new_post.save()
 
-    return redirect('main:detail',new_post.id)
+        words=new_post.content.split()
+        tag_list=[]
+
+        for w in words:
+            if len(w)>0:
+                if w[0]=='#':
+                    tag_list.append(w[1:])  
+        for t in tag_list:
+            tag,boolean=Tag.objects.get_or_create(name=t)
+            new_post.tags.add(tag.id)
+
+        return redirect('main:detail',new_post.id)
+    else:
+        return redirect('accounts:login')
 
 def edit(request,id):
     edit_post=Post.objects.get(pk=id)
@@ -54,16 +79,45 @@ def edit(request,id):
 
 def update(request,id):
     update_post=Post.objects.get(pk=id)
-    update_post.title=request.POST['title']
-    update_post.writer=request.POST['writer']
-    update_post.content=request.POST['content']
-    update_post.feeling=request.POST['feeling']
-    update_post.updated_time=timezone.now()
-    update_post.image=request.FILES.get('image')
-    update_post.save()
-    return redirect('main:detail',update_post.id)
+    if request.user.is_authenticated and request.user==update_post.writer:
+        update_post.title=request.POST['title']
+        update_post.content=request.POST['content']
+        update_post.feeling=request.POST['feeling']
+        update_post.updated_time=timezone.now()
+        
+        words=update_post.content.split()
+        tag_list=[]
+
+        for w in words:
+            if len(w)>0:
+                if w[0]=='#':
+                    tag_list.append(w[1:])
+        for t in tag_list:
+            tag,boolean=Tag.objects.get_or_create(name=t)
+            update_post.tags.add(tag.id)
+
+        if request.FILES.get('image'):
+            update_post.image=request.FILES.get('image')
+        update_post.save()
+        return redirect('main:detail',update_post.id)
+    return redirect('accounts:login',update_post.id)
 
 def delete(request,id):
     delete_post=Post.objects.get(pk=id)
     delete_post.delete()
     return redirect('main:secondpage')
+
+def delete_comment(request,id):
+    comments = get_object_or_404(Comment,pk=id)
+    post_id=comments.post.id
+    comments.delete()
+    return redirect('main:detail',post_id)
+
+def tag_list(request): #모든 태그 목록을 볼 수 있는 페이지
+    tags=Tag.objects.all()
+    return render(request,'main/tag-list.html',{'tags':tags})
+
+def tag_posts(request,tag_id): #특정 태그를 가진 게시글의 목록을 볼 수 있는 페이지
+    tag=get_object_or_404(Tag,id=tag_id)
+    posts=tag.posts.all()
+    return render(request,'main/tag-post.html',{'tag':tag,'posts':posts})
