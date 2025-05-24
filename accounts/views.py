@@ -31,11 +31,11 @@ def signup(request):
                 username=request.POST['username'],
                 password=request.POST['password']
             )
-            email_address=request.POST['email_address']
-            profile_image=request.FILES.get('profile_image')
+            #email_address=request.POST['email_address']
+            #profile_image=request.FILES.get('profile_image')
 
-            profile=Profile(user=user,email_address=email_address,profile_image=profile_image)
-            profile.save()
+            #profile=Profile(user=user,email_address=email_address,profile_image=profile_image)
+            #profile.save()
             auth.login(request,user)
             return redirect('/')
     return render(request,'accounts/signup.html')

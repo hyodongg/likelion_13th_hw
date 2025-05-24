@@ -1,3 +1,15 @@
 h1 {
-    color: orange;
+  color: rgb(8, 99, 190);
+}
+.nav-link-user {
+  color: greenyellow;
+}
+
+.nav-link-account li a {
+  color: black;
+}
+
+.nav-link-account li a:hover {
+  text-decoration: underline;
+  color: #f00000;
 }
